@@ -1,12 +1,14 @@
 package org.rpc;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -30,6 +32,12 @@ class CSVFileTest {
   @AfterAll
   static void afterAll() throws IOException {
     Files.delete(csvFilePath);
+  }
+
+  @Test
+  void non_existent_file_throws_exception() {
+    assertThatThrownBy(() -> new CSVFile("file-that-does-not-exist.csvvvv"))
+        .isInstanceOf(UncheckedIOException.class);
   }
 
   @ParameterizedTest
