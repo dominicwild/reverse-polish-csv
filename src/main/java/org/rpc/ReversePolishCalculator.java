@@ -7,7 +7,7 @@ public class ReversePolishCalculator {
   public ReversePolishCalculator(CSVFile csvFile) {
   }
 
-  public String calculate() {
+  public void calculate() {
     throw new IllegalArgumentException("not done yet");
   }
 }

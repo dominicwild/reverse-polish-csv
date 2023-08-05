@@ -47,7 +47,11 @@ public class CSVFile implements CellReader {
   }
 
   @Override
-  public String valueAt(String cellString) {
-    return cells.get(cellString);
+  public String valueAt(String cellRef) {
+    if (cellRef == null || !cellRef.matches("[A-Z]\\d")) {
+      throw new IllegalArgumentException("Cell reference '" + cellRef + "' is not valid.");
+    }
+    return cells.get(cellRef);
   }
 }
+
