@@ -1,4 +1,4 @@
-package org.rpc;
+package org.rpc.csv;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -43,10 +43,11 @@ class CSVFileTest {
   @ParameterizedTest
   @CsvSource({
       "A1, 10",
-      "A2, 1 3 +",
-      "A3, 2 3 -",
-      "B1, b1 b2 *",
-      "C2, 1 2 3",
+      "B1, 1 3 +",
+      "C1, 2 3 -",
+      "A2, b1 b2 *",
+      "B3, 1 2 3",
+      "C2, b1 a2 / c1 +",
       "C3, c3"
   })
   void read_cells_of_csv_in_letter_function_notation(String cellString, String expectedCellValue){
