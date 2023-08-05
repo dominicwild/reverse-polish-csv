@@ -16,7 +16,7 @@ record Cell(String coordinate, String value) {
 
 }
 
-public class CSVFile {
+public class CSVFile implements CellReader {
 
   private final Map<String, String> cells;
 
@@ -42,12 +42,12 @@ public class CSVFile {
         );
   }
 
-
   private String toLetter(int col) {
     return String.valueOf((char) (65 + col));
   }
 
-  public String getCell(String cellString) {
+  @Override
+  public String valueAt(String cellString) {
     return cells.get(cellString);
   }
 }

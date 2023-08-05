@@ -53,7 +53,7 @@ class CSVFileTest {
   void read_cells_of_csv_in_letter_function_notation(String cellString, String expectedCellValue){
     CSVFile csvFile = new CSVFile(csvFilePath.toFile().getPath());
 
-    String value = csvFile.getCell(cellString);
+    String value = csvFile.valueAt(cellString);
     assertThat(value).isEqualTo(expectedCellValue);
   }
 
