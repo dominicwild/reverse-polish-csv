@@ -8,6 +8,8 @@ import org.rpc.csv.Table;
 
 public class ReversePolishCalculator {
 
+  public static final String ERR_VALUE = "#ERR";
+
   interface Operation {
 
     Integer apply(Integer operand2, Integer operand1);
@@ -36,19 +38,27 @@ public class ReversePolishCalculator {
   private String calculate(String rpcString) {
     Deque<Integer> valueStack = new ArrayDeque<>();
 
-    for (String value : rpcString.split(" ")) {
-      if (isANumber(value)) {
-        valueStack.push(Integer.parseInt(value));
+    try {
+      for (String value : rpcString.split(" ")) {
+        if (isANumber(value)) {
+          valueStack.push(Integer.parseInt(value));
+        }
+        if (value.matches("[+\\-/*]")) {
+          Integer operand1 = valueStack.pop();
+          Integer operand2 = valueStack.pop();
+          Integer result = operations.get(value.charAt(0)).apply(operand2, operand1);
+          valueStack.push(result);
+        }
       }
-      if (value.matches("[+\\-/*]")) {
-        Integer operand1 = valueStack.pop();
-        Integer operand2 = valueStack.pop();
-        Integer result = operations.get(value.charAt(0)).apply(operand2, operand1);
-        valueStack.push(result);
-      }
-    }
 
-    return valueStack.pop() + "";
+      if (valueStack.size() != 1) {
+        return ERR_VALUE;
+      }
+
+      return valueStack.pop() + "";
+    } catch (Exception e) {
+      return ERR_VALUE;
+    }
   }
 
   private static boolean isANumber(String value) {
