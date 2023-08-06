@@ -28,26 +28,30 @@ public class ReversePolishCalculator {
 
     table.forEach(entry -> {
       String cellValue = entry.getValue();
-      String processedValue = calculate(cellValue);
+      String processedValue = calculate(cellValue, table);
       entry.setValue(processedValue);
     });
 
     return table;
   }
 
-  private String calculate(String rpcString) {
+  private String calculate(String rpcString, Table table) {
     Deque<Integer> valueStack = new ArrayDeque<>();
 
     try {
       for (String value : rpcString.split(" ")) {
         if (isANumber(value)) {
           valueStack.push(Integer.parseInt(value));
-        }
-        if (value.matches("[+\\-/*]")) {
+        } else if (isAnOperator(value)) {
           Integer operand1 = valueStack.pop();
           Integer operand2 = valueStack.pop();
           Integer result = operations.get(value.charAt(0)).apply(operand2, operand1);
           valueStack.push(result);
+        } else if (isAReference(value)) {
+          String processedValue = calculate(table.valueAt(value), table);
+          valueStack.push(Integer.parseInt(processedValue));
+        } else {
+          throw new IllegalArgumentException("Invalid token at " + value);
         }
       }
 
@@ -61,7 +65,16 @@ public class ReversePolishCalculator {
     }
   }
 
+  private static boolean isAReference(String value) {
+    return value.matches("[a-zA-Z]\\d");
+  }
+
+  private static boolean isAnOperator(String value) {
+    return value.matches("[+\\-/*]");
+  }
+
   private static boolean isANumber(String value) {
     return value.matches("\\d.*");
   }
+
 }
