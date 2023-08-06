@@ -2,10 +2,12 @@ package org.rpc.csv;
 
 import static org.rpc.csv.CSVFile.LETTER_A_ASCII_CODE;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class Table {
 
@@ -38,5 +40,34 @@ public class Table {
     for (Map.Entry<String, String> entry : cells.entrySet()) {
       iteratorFunction.accept(entry);
     }
+  }
+
+  @Override
+  public String toString() {
+    return cells.keySet()
+        .stream()
+        .sorted(Comparator.comparing(Table::reverse))
+        .collect(Collectors.groupingBy(this::getRowOf))
+        .values()
+        .stream()
+        .map(rowValues -> String.join(",", rowValues))
+        .sorted()
+        .map(line -> {
+          String newLine = line;
+          String[] cellRefs = line.split(",");
+          for (String cellRef : cellRefs) {
+            newLine = newLine.replace(cellRef, valueAt(cellRef));
+          }
+          return newLine;
+        })
+        .collect(Collectors.joining(System.lineSeparator()));
+  }
+
+  private int getRowOf(String key) {
+    return key.charAt(1) - LETTER_A_ASCII_CODE;
+  }
+
+  private static String reverse(String key1) {
+    return new StringBuilder(key1).reverse().toString();
   }
 }

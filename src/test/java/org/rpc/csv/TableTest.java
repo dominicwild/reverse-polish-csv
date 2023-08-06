@@ -2,6 +2,7 @@ package org.rpc.csv;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
@@ -33,5 +34,27 @@ class TableTest {
     table.add(row, col, expectedValue);
 
     assertThat(table.valueAt(expectedCellRef)).isEqualTo(expectedValue);
+  }
+
+  @Test
+  void output_table_string() {
+    Table table = new Table();
+
+    table.add(0, 2, "Something");
+    table.add(0, 0, "10");
+    table.add(1, 1, "a1 b2 * c3 +");
+    table.add(1, 0, "1 2 +");
+    table.add(1, 2, "34");
+    table.add(0, 1, "ABC");
+    table.add(2, 0, "1");
+    table.add(2, 2, "3");
+    table.add(2, 1, "2");
+
+    String expectedTable = """
+        10,ABC,Something
+        1 2 +,a1 b2 * c3 +,34
+        1,2,3""";
+
+    assertThat(table.toString().replace("\r\n", "\n")).hasToString(expectedTable);
   }
 }

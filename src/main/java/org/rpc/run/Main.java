@@ -2,6 +2,7 @@ package org.rpc.run;
 
 import org.rpc.ReversePolishCalculator;
 import org.rpc.csv.CSVFile;
+import org.rpc.csv.Table;
 
 public class Main {
 
@@ -9,6 +10,7 @@ public class Main {
     String fileName = args[0];
     CSVFile csvFile = new CSVFile(fileName);
     ReversePolishCalculator calculator = new ReversePolishCalculator();
-    calculator.processCells(csvFile.toTable());
+    Table processedTable = calculator.processCells(csvFile.toTable());
+    System.out.println(processedTable.toString());
   }
 }
