@@ -19,11 +19,11 @@ public class Table {
     if (notValid(cellRef)) {
       throw new IllegalArgumentException("Cell reference '" + cellRef + "' is not valid.");
     }
-    return cells.get(cellRef);
+    return cells.get(cellRef.toUpperCase());
   }
 
   private static boolean notValid(String cellRef) {
-    return cellRef == null || !cellRef.matches("[A-Z]\\d");
+    return cellRef == null || !cellRef.matches("[a-zA-Z]\\d");
   }
 
   private String createCellRef(int row, int col) {

@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class TableTest {
 
   @ParameterizedTest
-  @ValueSource(strings = {"", "a1", "something", "A", "1A", " "})
+  @ValueSource(strings = {"", "something", "A", "1A", " "})
   @NullSource
   void invalid_cell_reference_throws_exception(String cellRef) {
     Table table = new Table();
@@ -22,6 +22,7 @@ class TableTest {
   @ParameterizedTest
   @CsvSource({
       "0,0,A1",
+      "0,0,a1",
       "1,1,B2",
       "2,1,B3",
       "2,4,E3",
